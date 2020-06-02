@@ -23,7 +23,7 @@ class TwoLayerNet:
 
         self.params, self.grads = [], []
         for layer in self.layers:
-            self.param += layer.params
+            self.params += layer.params
             self.grads += layer.grads
 
     # softmaxはしてない
