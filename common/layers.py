@@ -1,5 +1,5 @@
 import numpy as np
-from common.functions import softmax
+from common.functions import softmax, cross_entropy_error
 
 
 class Affine:
@@ -38,4 +38,49 @@ class Softmax:
         dx = self.out * dout
         sumdx = np.sum(dx, axis=1, keepdims=True)
         dx -= self.out * sumdx
+        return dx
+
+
+class SoftmaxWithLoss:
+    def __init__(self):
+        self.params, self.grads = [], []
+        self.y = None
+        self.t = None
+
+    def forward(self, x, t):
+        self.t = t
+        self.y = softmax(x)
+
+        # 教師ラベルがone-hotベクトルの場合、正解のインデックスに変換
+        if self.t.tsize == self.y.size:
+            self.t = self.t.argmax(axis=1)
+
+        loss = cross_entropy_error(self.y, self.t)
+
+        return loss
+
+    # doutのデフォルト引数が指定しているのはなぜか
+    def backward(self, dout=1):
+        batch_size = self.t.shape[0]
+
+        dx = self.y.copy()
+        dx[np.arange(batch_size), self.t] -= 1
+        dx *= dout
+        dx = dx / batch_size
+
+        return dx
+
+
+class Sigmoid:
+    def __init__(self):
+        self.params, self.grads = [], []
+        self.out = None
+
+    def forward(self, x):
+        out = 1 / (1 + np.exp(-x))
+        self.out = out
+        return out
+
+    def backward(self, dout):
+        dx = dout * (1.0 - self.out) * self.out
         return dx
