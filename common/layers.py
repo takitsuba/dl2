@@ -17,7 +17,7 @@ class Affine:
     def backward(self, dout):
         W, b = self.params
         dx = np.dot(dout, W.T)
-        dW = np.dout(self.x.T, dout)
+        dW = np.dot(self.x.T, dout)
         db = np.sum(dout, axis=0)
 
         self.grads[0][...] = dW
@@ -52,7 +52,7 @@ class SoftmaxWithLoss:
         self.y = softmax(x)
 
         # 教師ラベルがone-hotベクトルの場合、正解のインデックスに変換
-        if self.t.tsize == self.y.size:
+        if self.t.size == self.y.size:
             self.t = self.t.argmax(axis=1)
 
         loss = cross_entropy_error(self.y, self.t)
