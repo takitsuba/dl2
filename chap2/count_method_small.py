@@ -17,3 +17,10 @@ U, S, V = np.linalg.svd(W)
 print("共起行列:", C[0])
 print("PPMI:", W[0])
 print("SVDのU:", U[0])
+
+# PPMIを二次元のベクトルに次元圧縮した上でplot
+for word, word_id in word_to_id.items():
+    plt.annotate(word, (U[word_id, 0], U[word_id, 1]))
+
+plt.scatter(U[:, 0], U[:, 1], alpha=0.5)
+plt.show()
