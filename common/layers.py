@@ -84,3 +84,23 @@ class Sigmoid:
     def backward(self, dout):
         dx = dout * (1.0 - self.out) * self.out
         return dx
+
+
+class MatMul:
+    def __init__(self, W):
+        self.params = [W]
+        self.grads = [np.zeros_like(W)]
+        self.x = None
+
+    def forward(self, x):
+        (W,) = self.params
+        out = np.dot(x, W)
+        self.x = x
+        return out
+
+    def backward(selfs, dout):
+        (W,) = self.params
+        dx = np.dot(dout, W.T)
+        dW = np.dot(self.x.T, dout)
+        self.grads[0][...] = dW
+        return dx
