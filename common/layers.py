@@ -98,7 +98,7 @@ class MatMul:
         self.x = x
         return out
 
-    def backward(selfs, dout):
+    def backward(self, dout):
         (W,) = self.params
         dx = np.dot(dout, W.T)
         dW = np.dot(self.x.T, dout)
