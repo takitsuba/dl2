@@ -1,3 +1,4 @@
+# ref: https://github.com/oreilly-japan/deep-learning-from-scratch-2/blob/master/common/trainer.py
 import sys
 
 sys.path.append("..")
