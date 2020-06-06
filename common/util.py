@@ -137,7 +137,7 @@ def convert_one_hot(corpus, vocab_size):
         C = corpus.shape[1]
         one_hot = np.zeros((N, C, vocab_size), dtype=np.int32)
         for idx_0, words in enumerate(corpus):
-            for idx_1, word_id in words:
+            for idx_1, word_id in enumerate(words):
                 one_hot[idx_0, idx_1, word_id] = 1
 
     return one_hot
