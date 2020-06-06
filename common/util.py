@@ -93,6 +93,7 @@ def ppmi(C, verbose=False, eps=1e-8):
             M[i, j] = max(0, pmi)
 
             if verbose:
+                cnt += 1
                 if cnt % (total // 100) == 0:
                     print("%.1f%% done" % (100 * cnt / total))
     return M
