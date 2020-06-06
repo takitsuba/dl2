@@ -1,6 +1,6 @@
 import sys
 
-sys.append("..")
+sys.path.append("..")
 from common.layers import MatMul, SoftmaxWithLoss
 import numpy as np
 
