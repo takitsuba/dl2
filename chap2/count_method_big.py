@@ -2,25 +2,33 @@ import sys
 
 sys.path.append("..")
 import numpy as np
-import matplotlib.pyplot as plt
-from common.util import preprocess, create_co_matrix, ppmi
+from common.util import most_similar, create_co_matrix, ppmi
+from dataset import ptb
 
-text = "You say goodbye and I say hello."
-corpus, word_to_id, id_to_word = preprocess(text)
+# ハイパーパラメータ
+window_size = 2
+wordvec_size = 100
+
+corpus, word_to_id, id_to_word = ptb.load_data("train")
 vocab_size = len(word_to_id)
+
+print("counting co-occurrence ...")
 C = create_co_matrix(corpus, vocab_size)
-W = ppmi(C)
+print("calculating PPMI ...")
+W = ppmi(C, verbose=True)
 
-# SVD
-U, S, V = np.linalg.svd(W)
+print("calculating SVD ...")
+try:
+    # truncated SVD
+    from sklearn.utils.extmatch import randomized_svd
 
-print("共起行列:", C[0])
-print("PPMI:", W[0])
-print("SVDのU:", U[0])
+    U, S, V = randomized_svd(W, n_components=wordvec_size, n_iter=5, random_state=None)
+except ImportError:
+    # SVD
+    print("importing truncated SVD failed, using np.linalg.svd.")
+    U, S, V = np.linalg.svd(W)
 
-# PPMIを二次元のベクトルに次元圧縮した上でplot
-for word, word_id in word_to_id.items():
-    plt.annotate(word, (U[word_id, 0], U[word_id, 1]))
-
-plt.scatter(U[:, 0], U[:, 1], alpha=0.5)
-plt.show()
+word_vecs = U[:, :wordvec_size]
+querys = ["you", "year", "car", "toyota"]
+for query in querys:
+    most_similar(query, word_to_id, id_to_word, word_vecs, top=5)
