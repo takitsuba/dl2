@@ -121,6 +121,5 @@ class Embedding:
     def backward(self, dout):
         (dW,) = self.grads
         dW[...] = 0
-        for i, word_id in enumerate(self.idx):
-            dW[word_id] += dout[i]
+        np.add.at(dW, self.idx, dout)
         return None
