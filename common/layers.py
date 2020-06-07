@@ -104,3 +104,16 @@ class MatMul:
         dW = np.dot(self.x.T, dout)
         self.grads[0][...] = dW
         return dx
+
+
+class Embedding:
+    def __init__(self, W):
+        self.params = [W]
+        self.grads = [np.zeros_like(W)]
+        self.idx = None
+
+    def forward(self, idx):
+        (W,) = self.params
+        self.idx = idx
+        out = W[idx]
+        return out
