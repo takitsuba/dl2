@@ -44,11 +44,11 @@ class UnigramSampler:
         self.vocab_size = vocab_size
 
         self.word_p = np.zeros(vocab_size)
-        corpus_size = len(corpus)
 
+        # コーパスサイズで割って確率を求める、ということをしなくてよい
+        # なぜなら最終的な確率では分母分子に現れ消えるため。
         for i in range(vocab_size):
-            # ある単語の確率は、ある単語の出現回数を全単語の出現回数で割り求める
-            self.word_p[i] = counts[i] / corpus_size
+            self.word_p[i] = counts[i]
 
         self.word_p = np.power(self.word_p, power)
         self.word_p /= np.sum(self.word_p)
