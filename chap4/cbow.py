@@ -33,7 +33,7 @@ class CBOW:
     def forward(self, contexts, target):
         # 中間層の計算
         h = 0
-        for i, layer in self.in_layers:
+        for i, layer in enumerate(self.in_layers):
             h += layer.forward(contexts[:, i])
         h *= 1 / len(self.in_layers)
 
