@@ -1,6 +1,6 @@
 import sys
 
-sys.append("..")
+sys.path.append("..")
 from common.layers import Embedding, SigmoidWithLoss
 import numpy as np
 from collections import Counter
