@@ -100,9 +100,10 @@ def ppmi(C, verbose=False, eps=1e-8):
 
 
 def create_contexts_target(corpus, window_size=1):
+    # 両端のwindow_size分以外はtargetになる
     target = corpus[window_size:-window_size]
-    contexts = []
 
+    contexts = []
     # 両端のtargetにならない単語のぞきidxを取得
     for idx in range(window_size, len(corpus) - window_size):
         cs = []
