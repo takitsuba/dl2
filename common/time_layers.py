@@ -1,4 +1,5 @@
 import numpy as np
+from common.layers import Embedding
 from common.functions import softmax
 
 
